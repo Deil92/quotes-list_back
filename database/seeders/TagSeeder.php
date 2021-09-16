@@ -16,13 +16,31 @@ class TagSeeder extends Seeder
     public function run()
     {
         Tag::create([
-            'name' => Str::random(10),
+            'name' => "Фильмы",
         ]);
         Tag::create([
-            'name' => Str::random(10),
+            'name' => "Природа",
         ]);
         Tag::create([
-            'name' => Str::random(10),
+            'name' => "Бизнес",
+        ]);
+        Tag::create([
+            'name' => "Сериалы",
+        ]);
+        Tag::create([
+            'name' => "Любовь",
+        ]);
+        Tag::create([
+            'name' => "Книга",
+        ]);
+        Tag::create([
+            'name' => "Приключения",
+        ]);
+        Tag::create([
+            'name' => "Будущее",
+        ]);
+        Tag::create([
+            'name' => "Деньги",
         ]);
     }
 }
