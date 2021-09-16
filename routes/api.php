@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('quotes/{page?}', [QuoteController::class, 'index']);
+
+Route::get('quote/{id}', [QuoteController::class, 'show']);
+
+Route::post('quote', [QuoteController::class, 'create']);
+
+Route::get('tags', [TagController::class, 'index']);
