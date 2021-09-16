@@ -16,15 +16,15 @@ class QuoteSeeder extends Seeder
     public function run()
     {
         Quote::create([
-            'qoute' => Str::random(300),
+            'quote' => Str::random(300),
             'author' => Str::random(20),
         ]);
         Quote::create([
-            'qoute' => Str::random(300),
+            'quote' => Str::random(300),
             'author' => Str::random(20),
         ]);
         Quote::create([
-            'qoute' => Str::random(300),
+            'quote' => Str::random(300),
             'author' => Str::random(20),
         ]);
     }
