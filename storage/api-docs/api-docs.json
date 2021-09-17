@@ -1,10 +1,10 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Integration Swagger in Laravel with Passport Auth Documentation",
-        "description": "Implementation of Swagger with in Laravel",
+        "title": "Quotes",
+        "description": "Quote List Application",
         "contact": {
-            "email": "admin@admin.com"
+            "email": "khristoforov.vadim@yandex.ru"
         },
         "version": "1.0.0"
     },
@@ -19,12 +19,299 @@
                 "operationId": "getQuotesOnPage",
                 "responses": {
                     "200": {
-                        "description": "successful operation"
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "1": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Quote id",
+                                                        "type": "integer"
+                                                    },
+                                                    "quote": {
+                                                        "description": "Quote text",
+                                                        "type": "string"
+                                                    },
+                                                    "author": {
+                                                        "description": "Author",
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "description": "Created At",
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2019-02-25 12:59:20"
+                                                    },
+                                                    "updated_at": {
+                                                        "description": "Updated At",
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2019-02-25 12:59:20"
+                                                    },
+                                                    "tags": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "description": "Tag id",
+                                                                    "type": "integer"
+                                                                },
+                                                                "name": {
+                                                                    "description": "Tag name",
+                                                                    "type": "string"
+                                                                },
+                                                                "pivot": {
+                                                                    "properties": {
+                                                                        "quote_id": {
+                                                                            "description": "Quote id",
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "tag_id": {
+                                                                            "description": "Tag id",
+                                                                            "type": "integer"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "collectionFormat": "multi"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "collectionFormat": "multi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "400": {
                         "description": "Bad request"
                     }
                 }
+            }
+        },
+        "/api/quote/:id": {
+            "get": {
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Get quote by id",
+                "description": "Return one quote",
+                "operationId": "getQuooteById",
+                "responses": {
+                    "200": {
+                        "description": "Return one quote",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "Quote id",
+                                            "type": "integer"
+                                        },
+                                        "quote": {
+                                            "description": "Quote text",
+                                            "type": "string"
+                                        },
+                                        "author": {
+                                            "description": "Author",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Created At",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2019-02-25 12:59:20"
+                                        },
+                                        "updated_at": {
+                                            "description": "Updated At",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2019-02-25 12:59:20"
+                                        },
+                                        "tags": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Tag id",
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "description": "Tag name",
+                                                        "type": "string"
+                                                    },
+                                                    "pivot": {
+                                                        "properties": {
+                                                            "quote_id": {
+                                                                "description": "Quote id",
+                                                                "type": "integer"
+                                                            },
+                                                            "tag_id": {
+                                                                "description": "Tag id",
+                                                                "type": "integer"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "collectionFormat": "multi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/quote": {
+            "post": {
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Create Quote",
+                "description": "create Quote",
+                "operationId": "CreateQuote",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "quory",
+                                    "author",
+                                    "tags"
+                                ],
+                                "properties": {
+                                    "quory": {
+                                        "type": "string"
+                                    },
+                                    "author": {
+                                        "type": "string"
+                                    },
+                                    "tags": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "description": "Tag id",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Create Quote",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "Quote id",
+                                            "type": "integer"
+                                        },
+                                        "author": {
+                                            "type": "string"
+                                        },
+                                        "quote": {
+                                            "description": "Quote text",
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "description": "Created At",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2019-02-25 12:59:20"
+                                        },
+                                        "updated_at": {
+                                            "description": "Updated At",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2019-02-25 12:59:20"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/tags": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "summary": "Get list of tags",
+                "description": "Returns tags",
+                "operationId": "getAllTags",
+                "responses": {
+                    "200": {
+                        "description": "Return all tags",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "1": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "Tag id",
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "description": "Tag name",
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "collectionFormat": "multi"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "responses": {
+            "400": {
+                "description": "Bad request"
             }
         }
     },

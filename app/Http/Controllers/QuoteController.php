@@ -11,10 +11,10 @@ class QuoteController extends Controller
     /**
      * @OA\Info(
      *      version="1.0.0",
-     *      title="Integration Swagger in Laravel with Passport Auth Documentation",
-     *      description="Implementation of Swagger with in Laravel",
+     *      title="Quotes",
+     *      description="Quote List Application",
      *      @OA\Contact(
-     *          email="admin@admin.com"
+     *          email="khristoforov.vadim@yandex.ru"
      *      ),
      * )
      *
@@ -31,7 +31,38 @@ class QuoteController extends Controller
      *      description="Returns page of quotes",
      *      @OA\Response(
      *          response=200,
-     *          description="successful operation"
+     *          description="successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(
+     *                  property="1",
+     *                  type="array",
+     *                  collectionFormat="multi",
+     *                  @OA\Items(
+     *              type="object",
+     *              @OA\Property(type="integer", property="id", description="Quote id"),
+     *              @OA\Property(type="string", property="quote", description="Quote text"),
+     *              @OA\Property(property="author", type="string", description="Author"),
+     *              @OA\Property(type="string", property="created_at", format="date-time", description="Created At", example="2019-02-25 12:59:20"),
+     *              @OA\Property(type="string", property="updated_at", format="date-time", description="Updated At", example="2019-02-25 12:59:20"),
+     *              @OA\Property(
+     *                  property="tags",
+     *                  type="array",
+     *                  collectionFormat="multi",
+     *                  @OA\Items(
+     *                      type="object",
+     *                      @OA\Property(type="integer", property="id", description="Tag id"),
+     *                      @OA\Property(type="string", property="name", description="Tag name"),
+     *                      @OA\Property(
+        *                      property="pivot",
+        *                      type="object",
+        *                      @OA\Property(type="integer", property="quote_id", description="Quote id"),
+        *                      @OA\Property(type="integer", property="tag_id", description="Tag id"),
+     *                      )
+     *                  ),
+     *              )
+     *                  )
+     *              )
+     *            )
      *       ),
      *       @OA\Response(response=400, description="Bad request"),
      *     )
@@ -56,10 +87,89 @@ class QuoteController extends Controller
         ];
     }
 
+    /**
+     * @OA\Get(
+     *      path="/api/quote/:id",
+     *      operationId="getQuooteById",
+     *      tags={"Quotes"},
+     *      summary="Get quote by id",
+     *      description="Return one quote",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Return one quote",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(type="integer", property="id", description="Quote id"),
+     *              @OA\Property(type="string", property="quote", description="Quote text"),
+     *              @OA\Property(property="author", type="string", description="Author"),
+     *              @OA\Property(type="string", property="created_at", format="date-time", description="Created At", example="2019-02-25 12:59:20"),
+     *              @OA\Property(type="string", property="updated_at", format="date-time", description="Updated At", example="2019-02-25 12:59:20"),
+     *              @OA\Property(
+     *                  property="tags",
+     *                  type="array",
+     *                  collectionFormat="multi",
+     *                  @OA\Items(
+     *                      type="object",
+     *                      @OA\Property(type="integer", property="id", description="Tag id"),
+     *                      @OA\Property(type="string", property="name", description="Tag name"),
+     *                      @OA\Property(
+        *                      property="pivot",
+        *                      type="object",
+        *                      @OA\Property(type="integer", property="quote_id", description="Quote id"),
+        *                      @OA\Property(type="integer", property="tag_id", description="Tag id"),
+     *                      )
+     *                  ),
+     *              )
+     *          )
+     *       ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *     )
+     *
+     * Returns Quote by id
+     */
     public function show($id) {
         return Quote::where('id', $id)->with('tags')->firstOrFail()->toArray();
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/quote",
+     *      operationId="CreateQuote",
+     *      tags={"Quotes"},
+     *      summary="Create Quote",
+     *      description="create Quote",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          description="Pass user credentials",
+     *          @OA\JsonContent(
+     *              required={"quory","author","tags"},
+     *              @OA\Property(property="quory", type="string"),
+     *              @OA\Property(property="author", type="string"),
+     *              @OA\Property(property="tags", type="array",
+     *                 @OA\Items(
+     *                      type="object",
+     *                      @OA\Property(type="integer", property="id", description="Tag id"),
+     *                  ) 
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Create Quote",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(type="integer", property="id", description="Quote id"),
+     *              @OA\Property(property="author", type="string"),
+     *              @OA\Property(type="string", property="quote", description="Quote text"),
+     *              @OA\Property(type="string", property="created_at", format="date-time", description="Created At", example="2019-02-25 12:59:20"),
+     *              @OA\Property(type="string", property="updated_at", format="date-time", description="Updated At", example="2019-02-25 12:59:20"),
+     *          )
+     *       ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *     )
+     *
+     * Returns create quote
+     */
     public function create(Request $request) {
         if(!$request->tags || !$request->quote || !$request->author){
             abort(400, 'valid-required');
